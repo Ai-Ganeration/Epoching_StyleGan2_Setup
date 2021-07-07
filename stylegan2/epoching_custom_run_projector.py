@@ -66,9 +66,13 @@ def project_real_images(network_pkl, dataset_name, data_dir, num_images, num_sna
     proj = projector.Projector()
     proj.set_network(Gs)
 
+    Gs_kwargs = dnnlib.EasyDict()
+    Gs_kwargs.randomize_noise = True
+    Gs_kwargs.truncation_psi = 2.0
+
     print('Loading images from "%s"...' % dataset_name)
     dataset_obj = dataset.load_dataset(data_dir=data_dir, tfrecord_dir=dataset_name, max_label_size=0, repeat=False, shuffle_mb=0)
-    assert dataset_obj.shape == Gs.output_shape[1:]
+    # assert dataset_obj.shape == Gs.output_shape[1:]
 
     for image_idx in range(num_images):
         print('Projecting image %d/%d ...' % (image_idx, num_images))
